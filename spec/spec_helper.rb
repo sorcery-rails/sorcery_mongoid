@@ -10,6 +10,8 @@ Sorcery::Controller::Config.submodules = [:external, :activity_logging]
 
 require 'sorcery_mongoid'
 
+require 'models/user'
+require 'models/authentication'
 
 DatabaseCleaner.strategy = :truncation
 

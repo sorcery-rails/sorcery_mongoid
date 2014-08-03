@@ -1,29 +1,11 @@
 require 'spec_helper'
-
-class User
-  include Mongoid::Document
-  authenticates_with_sorcery!
-
-  field :username, type: String
-
-  has_many :authentications, autosave: true
-end
-
-class Authentication
-  include Mongoid::Document
-  field :provider, type: String
-  field :uid, type: String
-
-  belongs_to :user
-end
-
 User.sorcery_config.authentications_class = Authentication
 
 describe User do
   specify { respond_to(:sorcery_adapter) }
   after(:each) { DatabaseCleaner.clean }
 
-  it 'instance method respond to :sorcery_adapter' do
+  it 'instance respond to :sorcery_adapter' do
     expect(User.new).to respond_to(:sorcery_adapter)
   end
 
@@ -123,7 +105,7 @@ describe User do
         expect(subject.get_current_users).to match_array([kir])
       end
 
-      it 'get active users' do
+      it 'does not get users after logout' do
         now = Time.now.in_time_zone
         kir.set_last_activity_at(now)
         sasha.set_last_activity_at(now)
@@ -131,7 +113,7 @@ describe User do
         expect(subject.get_current_users).to match_array([sasha])
       end
 
-      it 'get active users' do
+      it 'does not get users when active too long ago' do
         User.sorcery_config.activity_timeout = 5
         now = Time.now.in_time_zone - 10
         kir.set_last_activity_at(now)

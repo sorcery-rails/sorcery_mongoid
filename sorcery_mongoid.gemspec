@@ -9,7 +9,6 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Sasha Alexandrov"]
   spec.email         = ["elequtree@gmail.com"]
   spec.summary       = %q{Mongoid adapter for sorcery}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
   spec.homepage      = ""
   spec.license       = "MIT"
 

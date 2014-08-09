@@ -120,5 +120,31 @@ describe User do
         expect(subject.get_current_users).to match_array([])
       end
     end
+
+    let (:user) { User.create(email: 'bob@example.com') }
+
+    describe '#update_attributes' do
+      it 'update attributes' do
+        user.sorcery_adapter.update_attributes username: 'Bob'
+        u = User.find(user.id)
+        expect(u.username).to eq 'Bob'
+      end
+
+      it 'update datetime attributes' do
+        now = Time.now
+        user.sorcery_adapter.update_attributes register_at: now
+        u = User.find(user.id)
+        expect(u.register_at.to_i).to eq now.utc.to_i
+      end
+    end
+
+    describe '#increment' do
+      it 'add 1 to given attribute' do
+        expect(user.age).to be nil
+        user.sorcery_adapter.increment(:age)
+        u = User.find(user.id)
+        expect(u.age).to eq 1
+      end
+    end
   end
 end
